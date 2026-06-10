@@ -1,4 +1,4 @@
-from .tools import get_current_time, calculator
+from .tools import get_current_time, calculator,get_current_date,get_current_day
 from .llm import get_llm_response
 
 
@@ -9,6 +9,10 @@ def process_query(question):
     # Time Tool
     if "time" in question_lower:
         return get_current_time()
+    if "date" in question_lower:
+        return get_current_date()
+    if "day" in question_lower:
+        return get_current_day()
 
     # Calculator Tool
     if any(op in question for op in ["+", "-", "*", "/"]):
