@@ -8,7 +8,17 @@ from .tools import (
     add_employee,
     get_employees,
     search_employee,
-    delete_employee
+    delete_employee,
+    add_task,
+    get_tasks,
+    complete_task,
+    delete_task,
+get_pending_tasks,
+    get_completed_tasks,
+    start_task,
+    total_tasks,
+    pending_task_count,
+    completed_task_count,
 )
 
 from .llm import get_llm_response
@@ -86,6 +96,72 @@ def process_query(question):
 
         except Exception as e:
             return f"Error: {str(e)}"
+
+    # ---------------- TASK TOOL ----------------
+
+    # ---------------- TASK TOOL ----------------
+
+    if question_lower.startswith("add task"):
+        try:
+            title = question.replace("add task", "").strip()
+
+            if not title:
+                return "Please provide a task title."
+
+            return add_task(title)
+
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    if "show tasks" in question_lower:
+        return get_tasks()
+
+    if "show pending tasks" in question_lower:
+        return get_pending_tasks()
+
+    if "show completed tasks" in question_lower:
+        return get_completed_tasks()
+
+    if question_lower.startswith("start task"):
+        try:
+            task_id = int(question.split()[-1])
+            return start_task(task_id)
+
+        except ValueError:
+            return "Task ID must be a number."
+
+    if question_lower.startswith("complete task"):
+        try:
+            task_id = int(question.split()[-1])
+            return complete_task(task_id)
+
+        except ValueError:
+            return "Task ID must be a number."
+
+    if question_lower.startswith("delete task"):
+        try:
+            task_id = int(question.split()[-1])
+            return delete_task(task_id)
+
+        except ValueError:
+            return "Task ID must be a number."
+
+    # ---------------- TASK ANALYTICS ----------------
+
+    if "total tasks" in question_lower:
+        return total_tasks()
+
+    if "pending task count" in question_lower:
+        return pending_task_count()
+
+    if "completed task count" in question_lower:
+        return completed_task_count()
+
+    if "how many tasks are pending" in question_lower:
+        return pending_task_count()
+
+    if "how many tasks are completed" in question_lower:
+        return completed_task_count()
 
     # ---------------- MEMORY ----------------
     memory = get_chat_memory()
